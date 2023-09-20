@@ -13,8 +13,8 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build-keycloak-theme
+      - run: yarn
+      - run: yarn build-keycloak-theme
       - uses: actions/upload-artifact@v3
         with:
           name: b2pconnect-keycloak-theme.jar
