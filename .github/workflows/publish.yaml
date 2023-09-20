@@ -1,0 +1,21 @@
+name: Publish theme
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build-keycloak-theme
+      - uses: actions/upload-artifact@v3
+        with:
+          name: b2pconnect-keycloak-theme.jar
+          path: build_keycloak/target/*

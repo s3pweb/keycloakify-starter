@@ -23,7 +23,5 @@ docker run \
    -it quay.io/keycloak/keycloak:$VERSION \
    start-dev --import-realm
 
-
 docker rm maildev --force || true
 echo "Bye"
-
