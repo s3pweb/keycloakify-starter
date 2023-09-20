@@ -5,7 +5,12 @@ VERSION="21.1.2"
 ADMIN_USER="admin"
 echo $PWD
 
-docker rm keycloak-testing-container || true
+docker rm keycloak-testing-container --force || true
+
+docker run -d --name maildev -p 1080:1080 -p 1025:1025 maildev/maildev
+
+echo "FAKE SMTP SERVER LUNCH : Open http://0.0.0.0:1080"
+echo "..."
 
 docker run \
    -p 8080:8080 \
@@ -19,4 +24,6 @@ docker run \
    start-dev --import-realm
 
 
+docker rm maildev --force || true
+echo "Bye"
 

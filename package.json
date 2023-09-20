@@ -15,7 +15,7 @@
         "storybook": "start-storybook -p 6006"
     },
     "keycloakify": {
-        "extraThemeProperties": [ 
+        "extraThemeProperties": [
             "foo=bar"
         ],
         "extraThemeNames": [
@@ -36,11 +36,6 @@
         "tsafe": "^1.6.0"
     },
     "devDependencies": {
-        "@types/node": "^15.3.1",
-        "@types/react": "18.0.9",
-        "@types/react-dom": "18.0.4",
-        "react-scripts": "5.0.1",
-        "typescript": "~4.7.0",
         "@storybook/addon-actions": "^6.5.16",
         "@storybook/addon-essentials": "^6.5.16",
         "@storybook/addon-interactions": "^6.5.16",
@@ -50,7 +45,13 @@
         "@storybook/node-logger": "^6.5.16",
         "@storybook/preset-create-react-app": "^4.1.2",
         "@storybook/react": "^6.5.16",
-        "@storybook/testing-library": "^0.0.13"
+        "@storybook/testing-library": "^0.0.13",
+        "@types/node": "^15.3.1",
+        "@types/react": "18.0.9",
+        "@types/react-dom": "18.0.4",
+        "maildev": "^2.1.0",
+        "react-scripts": "5.0.1",
+        "typescript": "~4.7.0"
     },
     "eslintConfig": {
         "extends": [

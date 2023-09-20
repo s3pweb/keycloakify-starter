@@ -50,12 +50,15 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     return (
         <div className={getClassName("kcLoginClass")}>
             <div id="kc-header" className={getClassName("kcHeaderClass")}>
-                {/* <div id="kc-header-wrapper" className={getClassName("kcHeaderWrapperClass")}>
+                {/* 
+                <div id="kc-header-wrapper" className={getClassName("kcHeaderWrapperClass")}>
                     {msg("loginTitleHtml", realm.displayNameHtml)}
-                </div> */}
+                </div> 
+                */}
                     <img
                             style={{ width: 267, height: 60 }}
-                            src="https://www.b2pconnect.com/wp-content/uploads/2021/06/B2PConnect.com_fondfonceai.png"
+                            src="https://www.b2pconnect.com/wp-content/uploads/2021/06/B2PConnect.com_fondfonceai.png"                            
+                            alt="B2PConnect.com"
                     ></img>
             </div>
 

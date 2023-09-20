@@ -25,7 +25,7 @@ const Info = lazy(() => import("keycloakify/login/pages/Info"));
 const classes: PageProps<any, any>["classes"] = {
     // NOTE: The classes are defined in ./KcApp.css
     "kcHtmlClass": "my-root-class",
-    "kcHeaderWrapperClass": "my-color my-font"
+    "kcHeaderWrapperClass": "my-font"
 };
 
 export default function KcApp(props: { kcContext: KcContext; }) {

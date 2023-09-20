@@ -351,7 +351,7 @@
   "otpPolicyLookAheadWindow" : 1,
   "otpPolicyPeriod" : 30,
   "otpPolicyCodeReusable" : false,
-  "otpSupportedApplications" : [ "totpAppFreeOTPName", "totpAppGoogleName", "totpAppMicrosoftAuthenticatorName" ],
+  "otpSupportedApplications" : [ "totpAppMicrosoftAuthenticatorName", "totpAppGoogleName", "totpAppFreeOTPName" ],
   "webAuthnPolicyRpEntityName" : "keycloak",
   "webAuthnPolicySignatureAlgorithms" : [ "ES256" ],
   "webAuthnPolicyRpId" : "",
@@ -1125,7 +1125,7 @@
     "replyTo" : "",
     "host" : "host.docker.internal",
     "from" : "test@test.fr",
-    "fromDisplayName" : "",
+    "fromDisplayName" : "Display Name",
     "envelopeFrom" : "",
     "ssl" : "false"
   },
@@ -1142,25 +1142,44 @@
   "identityProviderMappers" : [ ],
   "components" : {
     "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy" : [ {
+      "id" : "a053c8dd-6685-4c97-b205-2ac04f9df300",
+      "name" : "Full Scope Disabled",
+      "providerId" : "scope",
+      "subType" : "anonymous",
+      "subComponents" : { },
+      "config" : { }
+    }, {
+      "id" : "7b3a067d-45ef-4ee7-9804-c693adb9ddd1",
+      "name" : "Trusted Hosts",
+      "providerId" : "trusted-hosts",
+      "subType" : "anonymous",
+      "subComponents" : { },
+      "config" : {
+        "host-sending-registration-request-must-match" : [ "true" ],
+        "client-uris-must-match" : [ "true" ]
+      }
+    }, {
+      "id" : "a3069117-c7af-45ec-bd99-615d89811a2b",
+      "name" : "Allowed Client Scopes",
+      "providerId" : "allowed-client-templates",
+      "subType" : "anonymous",
+      "subComponents" : { },
+      "config" : {
+        "allow-default-scopes" : [ "true" ]
+      }
+    }, {
       "id" : "2a542c9b-1817-4b27-a96e-c5e2cf6ec5f1",
       "name" : "Allowed Protocol Mapper Types",
       "providerId" : "allowed-protocol-mappers",
       "subType" : "authenticated",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-full-name-mapper", "oidc-address-mapper", "oidc-usermodel-property-mapper", "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-usermodel-attribute-mapper", "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper" ]
+        "allowed-protocol-mapper-types" : [ "oidc-address-mapper", "oidc-full-name-mapper", "saml-user-property-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-usermodel-attribute-mapper", "saml-role-list-mapper", "saml-user-attribute-mapper", "oidc-usermodel-property-mapper" ]
       }
     }, {
       "id" : "2b7aaae9-82d6-46eb-aafb-e669a3cacd50",
       "name" : "Consent Required",
       "providerId" : "consent-required",
-      "subType" : "anonymous",
-      "subComponents" : { },
-      "config" : { }
-    }, {
-      "id" : "a053c8dd-6685-4c97-b205-2ac04f9df300",
-      "name" : "Full Scope Disabled",
-      "providerId" : "scope",
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : { }
@@ -1174,23 +1193,13 @@
         "allow-default-scopes" : [ "true" ]
       }
     }, {
-      "id" : "7b3a067d-45ef-4ee7-9804-c693adb9ddd1",
-      "name" : "Trusted Hosts",
-      "providerId" : "trusted-hosts",
-      "subType" : "anonymous",
-      "subComponents" : { },
-      "config" : {
-        "host-sending-registration-request-must-match" : [ "true" ],
-        "client-uris-must-match" : [ "true" ]
-      }
-    }, {
       "id" : "8159e706-fd2d-4f3c-ab5e-6a3fbc4ffd56",
       "name" : "Allowed Protocol Mapper Types",
       "providerId" : "allowed-protocol-mappers",
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "saml-user-attribute-mapper", "oidc-full-name-mapper", "oidc-usermodel-property-mapper", "oidc-address-mapper", "oidc-usermodel-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-user-property-mapper", "saml-role-list-mapper" ]
+        "allowed-protocol-mapper-types" : [ "oidc-sha256-pairwise-sub-mapper", "saml-role-list-mapper", "saml-user-property-mapper", "oidc-address-mapper", "saml-user-attribute-mapper", "oidc-full-name-mapper", "oidc-usermodel-attribute-mapper", "oidc-usermodel-property-mapper" ]
       }
     }, {
       "id" : "dbcfa0c0-31de-423f-a7c6-5cc7a193772d",
@@ -1201,27 +1210,14 @@
       "config" : {
         "max-clients" : [ "200" ]
       }
-    }, {
-      "id" : "a3069117-c7af-45ec-bd99-615d89811a2b",
-      "name" : "Allowed Client Scopes",
-      "providerId" : "allowed-client-templates",
-      "subType" : "anonymous",
+    } ],
+    "org.keycloak.userprofile.UserProfileProvider" : [ {
+      "id" : "233e0b2a-c860-4ac9-a897-4bb1a10a966d",
+      "providerId" : "declarative-user-profile",
       "subComponents" : { },
-      "config" : {
-        "allow-default-scopes" : [ "true" ]
-      }
+      "config" : { }
     } ],
     "org.keycloak.keys.KeyProvider" : [ {
-      "id" : "46722a21-6b25-4f67-bceb-60e140f572d7",
-      "name" : "aes-generated",
-      "providerId" : "aes-generated",
-      "subComponents" : { },
-      "config" : {
-        "kid" : [ "e0e2f5c5-c7ae-494b-b046-54063aac7130" ],
-        "secret" : [ "Y4-u5bCBJMmUT34CZ1Pj3g" ],
-        "priority" : [ "100" ]
-      }
-    }, {
       "id" : "1d4ebec3-4155-4010-aa6f-b02fd7a3dc2f",
       "name" : "rsa-generated",
       "providerId" : "rsa-generated",
@@ -1230,6 +1226,27 @@
         "privateKey" : [ "MIIEowIBAAKCAQEAv+Pc2gZmmbgrmhYdk1NUvJDb1FhmSYSomLPEtt7kkWzDcaxVMuDLUnpG387GXBFYgytdq8iYnMFeTHi+zf3NWyn0XoDZOAg8Uq0YcUwrXbzAcJENKvoChMNrMLN9Effjkcev5kbILWr7U3aB6FCck4TZpypi/IyuCaY7FbJGvvYRxQsslYtIADEW8ZZL/+9zVbqmVNks+C/Gwmn7jHuxOwoRGStmRsgZYXMpPYsJAuWefljF80RvaBVpqNbXgoIsSpc3oDWToyOTeTIFmUTcBM2XVZq9BaHoguwFBy91O0yzuAt3bCPqcsOxODhVxjkdk1He66WMrJT+6p114W80nwIDAQABAoIBAAV3Ewd6Yl4Kxh7l32h40fzUKi2zDxGNySXThKdH+YG4r+8k7j00qTXJnaGbtZo0JXFisesnshCM2+lzLq9LG5+F8m6Li5yyR1nHc7HDFCDf2hqLk0du84nh/FozBy5YebEszB9qNMh9bGkHAtl0k7TOOf/ExKGLNg24aywkBNAm31TJiLXY+S82rD0dP7IW89dzv/KVs4mIqjdjIaiCca45DiTfGa3e5J7ZJTyN3Pd9uRwtyE6e6LntW6u+wp4icx8MVqJp6Cp4l4BlMoXBBj+/Ccvxf6L4Oz3H8JbyvFh6zgikKY1VubB1eyqWM+hZTYkNeQ/iKDdL3fyn72Gs3WECgYEA6SSOD3MITYvRA3FrUxuImzrFyc5ZY0zCniBtvT+n/IdzqxBT+CCQR3dU4zKwhNB5z5HyjIIdGw7OiJQbRIaDK+klWuD3jMKfBvB98jkfl99QNgneAfkAkNF7yz11ynhz4kmd+0WlZQ1LzQmsnU4dqFEzGF3IkLphj5tFrPb89/ECgYEA0rPxTYeczp7lamFECnMjMFPwZs1h/iJ6zatDlsO7jIdz0WcvdJEzFNL81kWMp6/m8haf+MNysRpLxFhrSCdTwln7yO0XD3thatg0ZcdlJ6Rbb9g654keYYatpMQ6DvEkx1/IKjngGyqS9jyCS0rZpgk1bCEq7gwvHKfuIa7ZBY8CgYA+ULv72yZT+9QRFIa4PvrDavEk4Je51/GI7GgIlnQjJl0/UuzuvF10DKxO0eSmi0aTuZHYBosbCVkg3l1vcnirCvUmFk10fSyeYTd4v9X29QRufTKu2kxRaPyqtTG/vXRT/pNQbywnF2e0VSqjHRcGPzXmBGMwc/DRvpHgCmBRMQKBgQC5B+xP+Vdq2377/I6T3qh4OD5VCOeVFRJiqpOgQiLhNdIvgj3aT+hb0SzXvhvW5lIZJmU1P+3oOP9wXXVY17BmbD8AI7Ssk9zoxxS8jG34cg0aGvkfevqDCpJSrz+M/5ccvrA45Lo5IRoNwvVoyUJ43H1dh4L7qRd2QsKMMc/DYQKBgCgGT8KQrxKTHD9qhW11n+n0gk5+TAVOEzfzs6aAAlmHtt09d/B12ta/4hTwWJ/Hh4potQIpjxz2DFQpyUgv3ZeGmjjh62bZTFsXmftLZTcjpPMDqcNCJeytMKLhDjaIZf5Zs9/H8OwdFvo2cdn7xK315gMlfqYbVBbdqZVX19zO" ],
         "keyUse" : [ "SIG" ],
         "certificate" : [ "MIICnTCCAYUCBgGGwWpAhDANBgkqhkiG9w0BAQsFADASMRAwDgYDVQQDDAdteXJlYWxtMB4XDTIzMDMwODEzMjgzMVoXDTMzMDMwODEzMzAxMVowEjEQMA4GA1UEAwwHbXlyZWFsbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL/j3NoGZpm4K5oWHZNTVLyQ29RYZkmEqJizxLbe5JFsw3GsVTLgy1J6Rt/OxlwRWIMrXavImJzBXkx4vs39zVsp9F6A2TgIPFKtGHFMK128wHCRDSr6AoTDazCzfRH345HHr+ZGyC1q+1N2gehQnJOE2acqYvyMrgmmOxWyRr72EcULLJWLSAAxFvGWS//vc1W6plTZLPgvxsJp+4x7sTsKERkrZkbIGWFzKT2LCQLlnn5YxfNEb2gVaajW14KCLEqXN6A1k6Mjk3kyBZlE3ATNl1WavQWh6ILsBQcvdTtMs7gLd2wj6nLDsTg4VcY5HZNR3uuljKyU/uqddeFvNJ8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAU6Rok88pzD6PJBQ/KN207M6msZ3rq0+rVSCFGyGYlbvyaRU+VLtzIOg16cbxy/dD04oErUBEJbEUE8mvfl0dqBoL5VngUL0HuyW4ktbkwxREWbBnQJbKhqUicFuB0TRAlb5F5bWkwLZ3TdWGXUELdhPf5wX5LKCp4tjdPccjj6gIk8KueScGbMGV6+EHCR6OwwMpEFTuhhEQZLi+QrnIvIj3m8Y5HvysigYoUpSjPo7xtZS3Q6rWYkOwwa2k0SmlwSaXd/EwJMWWutCS20+KzxMrRR1WVTqHorYxJe1Ii9U7HC2NNdRTXPk05pU+3wACJCZukmjCNYUKgMjugkt6jQ==" ],
+        "priority" : [ "100" ]
+      }
+    }, {
+      "id" : "6192076a-6840-453d-87dc-de8150b6418b",
+      "name" : "hmac-generated",
+      "providerId" : "hmac-generated",
+      "subComponents" : { },
+      "config" : {
+        "kid" : [ "3597e885-6e5c-48ac-91f0-7f2879bfce63" ],
+        "secret" : [ "QkUdN43dqWqnyWaSf_xPUlF96mGjCOoDJ1IYF0W3ePUXdXuQlcZ5m0T_PANWqPp6bp6hopt2mj6HjzfZn2UYCA" ],
+        "priority" : [ "100" ],
+        "algorithm" : [ "HS256" ]
+      }
+    }, {
+      "id" : "46722a21-6b25-4f67-bceb-60e140f572d7",
+      "name" : "aes-generated",
+      "providerId" : "aes-generated",
+      "subComponents" : { },
+      "config" : {
+        "kid" : [ "e0e2f5c5-c7ae-494b-b046-54063aac7130" ],
+        "secret" : [ "Y4-u5bCBJMmUT34CZ1Pj3g" ],
         "priority" : [ "100" ]
       }
     }, {
@@ -1243,17 +1260,6 @@
         "certificate" : [ "MIICnTCCAYUCBgGGwWpA3TANBgkqhkiG9w0BAQsFADASMRAwDgYDVQQDDAdteXJlYWxtMB4XDTIzMDMwODEzMjgzMVoXDTMzMDMwODEzMzAxMVowEjEQMA4GA1UEAwwHbXlyZWFsbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANR7MXf7ieDPAucN5VG10BIUtgxiK4GuVvJdZgME2bZ2ALi0NuczVaSsUBrFelev7cpG2JTw1/eFLcbgKpW9DS5rUm/UbKPoGcqeK4gw5iQxhUSjPlnodmHekrJWLjMAUoudEPZjsnbZ0hLZiIAI3Gqgg+ZazdPxAKaH6cZaOQ1cLaRxxjb2nF2NuK9g67cZR1F/MWu/GLW0+C9eBKmP19nJoiBF77dGg4a64NpePLB9QVo2LTF9Udpo9JnfZtlvlKkIVoJHFMp+L1sgPwiOTXXlwwT8mg/n599tn0S7abu/+1nVb+PZzUd+mwBBlTZLHEkXpiVv4uI6ah50Gl2FIqkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAQ+Bxch73Zz5Z6+nzM1xeDexVbR+7dXo/GrVwHKvw3IRIRuhexRgip1Ut6tSJnJ2KkaAeOgy4A5UUJj4fAULw7QFKHSpY1uKuHANzIu+W1/jlPu6mGa+SGsHNgvji14ZJS3TVqk3Mhs/PGpyqt6IUjAmjPFyjFq7yYs6MSZ6O8Tqp/fREoIH2owAqUtIHbHLfnp4YNFrSSam8XhECk65+WIx23OPoMi+TZQbgxUG1l9huCBaKLBR3cG5yLLwSghn7clF80G7JZ1pxLKFZnNbURj5AO3e2LZ9NKNxiQJmZhN5zIBijuWAZ6QG8t7xLYFRF6DM0nYHFci8CpCfLRUSILQ==" ],
         "priority" : [ "100" ],
         "algorithm" : [ "RSA-OAEP" ]
-      }
-    }, {
-      "id" : "6192076a-6840-453d-87dc-de8150b6418b",
-      "name" : "hmac-generated",
-      "providerId" : "hmac-generated",
-      "subComponents" : { },
-      "config" : {
-        "kid" : [ "3597e885-6e5c-48ac-91f0-7f2879bfce63" ],
-        "secret" : [ "QkUdN43dqWqnyWaSf_xPUlF96mGjCOoDJ1IYF0W3ePUXdXuQlcZ5m0T_PANWqPp6bp6hopt2mj6HjzfZn2UYCA" ],
-        "priority" : [ "100" ],
-        "algorithm" : [ "HS256" ]
       }
     } ]
   },
