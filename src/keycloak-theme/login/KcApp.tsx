@@ -5,7 +5,7 @@ import type { KcContext } from "./kcContext";
 import { useI18n } from "./i18n";
 
 const Template = lazy(() => import("./Template"));
-const DefaultTemplate = lazy(() => import("keycloakify/login/Template"));
+//const DefaultTemplate = lazy(() => import("keycloakify/login/Template"));
 
 // You can uncomment this to see the values passed by the main app before redirecting.  
 //import { foo, bar } from "./valuesTransferredOverUrl";
