@@ -47,6 +47,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         return null;
     }
 
+    console.log("Template.tsx", kcContext);
+    console.log({ props });
+
     return (
         <div className={getClassName("kcLoginClass")}>
             <div id="kc-header" className={getClassName("kcHeaderClass")}>
@@ -62,7 +65,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                     ></img>
             </div>
 
-            <div className={clsx(getClassName("kcFormCardClass"), displayWide && getClassName("kcFormCardAccountClass"))}>
+            <div style={{maxWidth: '650px'}} className={clsx(getClassName("kcFormCardClass"), displayWide && getClassName("kcFormCardAccountClass"))}>
                 <header className={getClassName("kcFormHeaderClass")}>
                     {realm.internationalizationEnabled && (assert(locale !== undefined), true) && locale.supported.length > 1 && (
                         <div id="kc-locale">
@@ -141,7 +144,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                         </>
                     )}
                 </header>
-                <div id="kc-content">
+                <div id="kc-content" style={{ textAlign: "center", fontSize: "large"}}>
                     <div id="kc-content-wrapper">
                         {/* App-initiated actions should not see warning messages about the need to complete the action during login. */}
                         {displayMessage && message !== undefined && (message.type !== "warning" || !isAppInitiatedAction) && (

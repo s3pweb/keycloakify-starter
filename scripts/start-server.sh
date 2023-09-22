@@ -24,4 +24,5 @@ docker run \
    start-dev --import-realm
 
 docker rm maildev --force || true
+docker rm keycloak-testing-container --force || true
 echo "Bye"

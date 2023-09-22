@@ -8,21 +8,21 @@ const KcAccountThemeApp = lazy(() => import("./keycloak-theme/account/KcApp"));
 const App = lazy(() => import("./App"));
 
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-        <Suspense>
-            {(()=>{
+  <StrictMode>
+    <Suspense>
+      {(() => {
+        if (kcLoginThemeContext !== undefined) {
+          console.log("kcLoginThemeContext", kcLoginThemeContext);
+          return <KcLoginThemeApp kcContext={kcLoginThemeContext} />;
+        }
 
-                if( kcLoginThemeContext !== undefined ){
-                    return <KcLoginThemeApp kcContext={kcLoginThemeContext} />;
-                }
+        if (kcAccountThemeContext !== undefined) {
+          console.log("kcAccountThemeContext", kcAccountThemeContext);
+          return <KcAccountThemeApp kcContext={kcAccountThemeContext} />;
+        }
 
-                if( kcAccountThemeContext !== undefined ){
-                    return <KcAccountThemeApp kcContext={kcAccountThemeContext} />;
-                }
-
-                return <App />;
-
-            })()}
-        </Suspense>
-    </StrictMode>
+        return <App />;
+      })()}
+    </Suspense>
+  </StrictMode>
 );
