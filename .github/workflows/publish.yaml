@@ -19,3 +19,9 @@ jobs:
         with:
           name: b2pconnect-keycloak-theme.jar
           path: build_keycloak/target/*
+      - name: Create new release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "${{github.run_id}}-${{github.run_number}}-${{github.run_attempt}}"
+          files: build_keycloak/target/*
+          token: ${{ secrets.TOKEN }}
