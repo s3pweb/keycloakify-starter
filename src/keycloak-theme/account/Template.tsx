@@ -20,13 +20,19 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { isReady } = usePrepareTemplate({
         "doFetchDefaultThemeResources": doUseDefaultCss,
         "styles": [
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+            //`${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
+            'https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.59.5/css/patternfly.min.css',
+            //`${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+            'https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.59.5/css/patternfly-additions.min.css',
+            
             `${url.resourcesPath}/css/account.css`
         ],
         "htmlClassName": undefined,
         "bodyClassName": clsx("admin-console", "user", getClassName("kcBodyClass"))
     });
+
+    console.log("Template Account", kcContext);
+    console.log({ props });
 
     if (!isReady) {
         return null;
@@ -102,9 +108,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                         <li className={clsx(active === "sessions" && "active")}>
                             <a href={url.sessionsUrl}>{msg("sessions")}</a>
                         </li>
-                        <li className={clsx(active === "applications" && "active")}>
+                        {/* <li className={clsx(active === "applications" && "active")}>
                             <a href={url.applicationsUrl}>{msg("applications")}</a>
-                        </li>
+                        </li> */}
                         {features.log && (
                             <li className={clsx(active === "log" && "active")}>
                                 <a href={url.logUrl}>{msg("log")}</a>

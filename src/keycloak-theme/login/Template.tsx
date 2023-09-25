@@ -49,7 +49,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         return null;
     }
 
-    console.log("Template.tsx", kcContext);
+    console.log("Template Login", kcContext);
     console.log({ props });
 
     return (

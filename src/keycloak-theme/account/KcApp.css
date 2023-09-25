@@ -6,4 +6,16 @@ This is why I made sure to use .my-root-account-class instead of .my-root-class 
 
 .my-root-account-class {
 	background: url(./assets/background.svg) no-repeat center center fixed;
+	
+}
+
+.navbar-pf {
+	background-color: #313F50;
+}
+
+.navbar-title {
+	background-image: url('https://www.b2pconnect.com/wp-content/uploads/2021/06/B2PConnect.com_fondfonceai.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+
 }
