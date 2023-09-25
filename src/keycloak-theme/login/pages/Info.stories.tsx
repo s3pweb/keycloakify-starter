@@ -1,23 +1,31 @@
-//This is to show that you can create stories for pages that you haven't overloaded.
-
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { createPageStory } from "../createPageStory";
 
 const { PageStory } = createPageStory({
-  pageId: "login-reset-password.ftl",
+  pageId: "info.ftl",
 });
 
 export default {
-  title: "login/LoginResetPassword",
+  title: "login/Info",
   component: PageStory,
 } as ComponentMeta<typeof PageStory>;
 
 export const Default: ComponentStory<typeof PageStory> = () => <PageStory />;
 
-export const WithEmailAsUsername: ComponentStory<typeof PageStory> = () => (
+export const Info: ComponentStory<typeof PageStory> = () => (
   <PageStory
     kcContext={{
-      realm: { loginWithEmailAllowed: true, registrationEmailAsUsername: true },
+      messageHeader: "My Custom Header",
+      message: {
+        summary: "My Realm Custom Message",
+      },
+      requiredActions: ["VERIFY_EMAIL", "UPDATE_PASSWORD"],
+
+      realm: {
+        displayName: "My Realm Custom Text",
+        displayNameHtml: "My Realm Custom HTML",
+      },
+
       locale: {
         currentLanguageTag: "fr",
       },

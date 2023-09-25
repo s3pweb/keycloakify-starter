@@ -7,6 +7,7 @@ export function createPageStory<PageId extends KcContext["pageId"]>(params: {
 }) {
 
     const { pageId } = params;
+    console.log('createPageStory params', params)
 
     function PageStory(params: { kcContext?: DeepPartial<Extract<KcContext, { pageId: PageId }>>; }) {
 
@@ -15,7 +16,9 @@ export function createPageStory<PageId extends KcContext["pageId"]>(params: {
             storyPartialKcContext: params.kcContext
         });
 
-        return <KcApp kcContext={kcContext} />;
+        console.log('kcContext', kcContext)
+
+        return <KcApp kcContext={kcContext} />;       
 
     }
 

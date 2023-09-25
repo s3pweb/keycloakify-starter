@@ -4,20 +4,19 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { createPageStory } from "../createPageStory";
 
 const { PageStory } = createPageStory({
-  pageId: "login-reset-password.ftl",
+  pageId: "login-update-password.ftl",
 });
 
 export default {
-  title: "login/LoginResetPassword",
+  title: "login/LoginUpdatePassword",
   component: PageStory,
 } as ComponentMeta<typeof PageStory>;
 
 export const Default: ComponentStory<typeof PageStory> = () => <PageStory />;
 
-export const WithEmailAsUsername: ComponentStory<typeof PageStory> = () => (
+export const LoginUpdatePassword: ComponentStory<typeof PageStory> = () => (
   <PageStory
     kcContext={{
-      realm: { loginWithEmailAllowed: true, registrationEmailAsUsername: true },
       locale: {
         currentLanguageTag: "fr",
       },

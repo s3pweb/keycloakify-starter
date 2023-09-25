@@ -14,6 +14,7 @@ export const { useI18n } = createUseI18n({
     //doForgotPassword: "I forgot my password",
     //invalidUserMessage: "Invalid username or password. (this message was overwrite in the theme)"
     confirmExecutionOfActions: "Perform the following action(s) :",
+    passwordPolicy: "8 characters minimum, 1 uppercase, 1 lowercase, 1 digit",
   },
   fr: {
     // usernameOrEmail: "Email",
@@ -24,6 +25,7 @@ export const { useI18n } = createUseI18n({
     // invalidUserMessage: "Nom d'utilisateur ou mot de passe invalide. (ce message a été écrasé dans le thème)"
     /* spell-checker: enable */
     confirmExecutionOfActions: "Les actions suivantes vont être exécutées :",
+    passwordPolicy: "8 caractères minimum, 1 majuscule, 1 minuscule, 1 chiffre",
   },
 });
 

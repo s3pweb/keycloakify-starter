@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import Fallback, { type PageProps } from "keycloakify/login";
 import type { KcContext } from "./kcContext";
 import { useI18n } from "./i18n";
+import LoginUpdatePassword from "./pages/LoginUpdatePassword";
 
 const Template = lazy(() => import("./Template"));
 //const DefaultTemplate = lazy(() => import("keycloakify/login/Template"));
@@ -46,11 +47,14 @@ export default function KcApp(props: { kcContext: KcContext; }) {
     * i18n.msg("foo") === <span>foo in English</span>
     */
 
+    console.log('KcApp.tsx', kcContext.pageId)
+
     return (
         <Suspense>
             {(() => {
                 switch (kcContext.pageId) {
                     case "login.ftl": return <Login {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+                    case "login-update-password.ftl": return <LoginUpdatePassword {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
                     case "register.ftl": return <Register {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
                     case "register-user-profile.ftl": return <RegisterUserProfile {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />
                     case "terms.ftl": return <Terms {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;

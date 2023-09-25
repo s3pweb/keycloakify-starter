@@ -34,8 +34,10 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { isReady } = usePrepareTemplate({
         "doFetchDefaultThemeResources": doUseDefaultCss,
         "styles": [
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
-            `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+            //`${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
+            'https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.59.5/css/patternfly.min.css',
+            //`${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+            'https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.59.5/css/patternfly-additions.min.css',
             `${url.resourcesCommonPath}/lib/zocial/zocial.css`,
             `${url.resourcesPath}/css/login.css`
         ],
@@ -99,11 +101,11 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                     </span>
                                 </div>
                                 <div className="col-md-10">
-                                    <h1 id="kc-page-title">{headerNode}</h1>
+                                    <h1 style={{fontWeight: "bold"}} id="kc-page-title">{headerNode}</h1>
                                 </div>
                             </div>
                         ) : (
-                            <h1 id="kc-page-title">{headerNode}</h1>
+                            <h1 style={{fontWeight: "bold"}} id="kc-page-title">{headerNode}</h1>
                         )
                     ) : displayRequiredFields ? (
                         <div className={getClassName("kcContentWrapperClass")}>
@@ -144,7 +146,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                         </>
                     )}
                 </header>
-                <div id="kc-content" style={{ textAlign: "center", fontSize: "large"}}>
+                <div id="kc-content" style={{ fontSize: "large"}}>
                     <div id="kc-content-wrapper">
                         {/* App-initiated actions should not see warning messages about the need to complete the action during login. */}
                         {displayMessage && message !== undefined && (message.type !== "warning" || !isAppInitiatedAction) && (
