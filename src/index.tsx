@@ -12,12 +12,10 @@ createRoot(document.getElementById("root")!).render(
     <Suspense>
       {(() => {
         if (kcLoginThemeContext !== undefined) {
-          console.log("kcLoginThemeContext", kcLoginThemeContext);
           return <KcLoginThemeApp kcContext={kcLoginThemeContext} />;
         }
 
         if (kcAccountThemeContext !== undefined) {
-          console.log("kcAccountThemeContext", kcAccountThemeContext);
           return <KcAccountThemeApp kcContext={kcAccountThemeContext} />;
         }
 

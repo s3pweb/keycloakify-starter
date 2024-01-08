@@ -5,10 +5,7 @@ import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
 export default function LoginUpdatePassword(
-  props: PageProps<
-    Extract<KcContext, { pageId: "login-update-password.ftl" }>,
-    I18n
-  >
+  props: PageProps<Extract<KcContext, { pageId: "login-update-password.ftl" }>, I18n>
 ) {
   const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
@@ -21,25 +18,14 @@ export default function LoginUpdatePassword(
 
   const { url, messagesPerField, isAppInitiatedAction, username } = kcContext;
 
-  console.log("LoginUpdatePassword", kcContext);
-  console.log({ props });
-
   return (
-    <Template
-      {...{ kcContext, i18n, doUseDefaultCss, classes }}
-      headerNode={msg("updatePasswordTitle")}
-    >
+    <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg("updatePasswordTitle")}>
       <div className="alert alert-info">
         <span className="kcFeedbackInfoIcon pficon pficon-info"></span>
         <span className="kc-feedback-text">{msg("passwordPolicy")}</span>
       </div>
 
-      <form
-        id="kc-passwd-update-form"
-        className={getClassName("kcFormClass")}
-        action={url.loginAction}
-        method="post"
-      >
+      <form id="kc-passwd-update-form" className={getClassName("kcFormClass")} action={url.loginAction} method="post">
         <input
           type="text"
           id="username"
@@ -60,17 +46,11 @@ export default function LoginUpdatePassword(
         <div
           className={clsx(
             getClassName("kcFormGroupClass"),
-            messagesPerField.printIfExists(
-              "password",
-              getClassName("kcFormGroupErrorClass")
-            )
+            messagesPerField.printIfExists("password", getClassName("kcFormGroupErrorClass"))
           )}
         >
           <div className={getClassName("kcLabelWrapperClass")}>
-            <label
-              htmlFor="password-new"
-              className={getClassName("kcLabelClass")}
-            >
+            <label htmlFor="password-new" className={getClassName("kcLabelClass")}>
               <div>{msg("passwordNew")}</div>
             </label>
           </div>
@@ -89,17 +69,11 @@ export default function LoginUpdatePassword(
         <div
           className={clsx(
             getClassName("kcFormGroupClass"),
-            messagesPerField.printIfExists(
-              "password-confirm",
-              getClassName("kcFormGroupErrorClass")
-            )
+            messagesPerField.printIfExists("password-confirm", getClassName("kcFormGroupErrorClass"))
           )}
         >
           <div className={getClassName("kcLabelWrapperClass")}>
-            <label
-              htmlFor="password-confirm"
-              className={getClassName("kcLabelClass")}
-            >
+            <label htmlFor="password-confirm" className={getClassName("kcLabelClass")}>
               {msg("passwordConfirm")}
             </label>
           </div>
@@ -115,21 +89,12 @@ export default function LoginUpdatePassword(
         </div>
 
         <div className={getClassName("kcFormGroupClass")}>
-          <div
-            id="kc-form-options"
-            className={getClassName("kcFormOptionsClass")}
-          >
+          <div id="kc-form-options" className={getClassName("kcFormOptionsClass")}>
             <div className={getClassName("kcFormOptionsWrapperClass")}>
               {isAppInitiatedAction && (
                 <div className="checkbox">
                   <label>
-                    <input
-                      type="checkbox"
-                      id="logout-sessions"
-                      name="logout-sessions"
-                      value="on"
-                      checked
-                    />
+                    <input type="checkbox" id="logout-sessions" name="logout-sessions" value="on" checked />
                     {msgStr("logoutOtherSessions")}
                   </label>
                 </div>
@@ -137,10 +102,7 @@ export default function LoginUpdatePassword(
             </div>
           </div>
 
-          <div
-            id="kc-form-buttons"
-            className={getClassName("kcFormButtonsClass")}
-          >
+          <div id="kc-form-buttons" className={getClassName("kcFormButtonsClass")}>
             {isAppInitiatedAction ? (
               <>
                 <input

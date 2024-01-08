@@ -34,9 +34,6 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
         formElement.submit();
     });
 
-    console.log('login.tsx', kcContext)
-    console.log({props})
-
     return (
         <Template
             {...{ kcContext, i18n, doUseDefaultCss, classes }}
