@@ -47,8 +47,6 @@ export default function KcApp(props: { kcContext: KcContext; }) {
     * i18n.msg("foo") === <span>foo in English</span>
     */
 
-    console.log('KcApp.tsx', kcContext.pageId)
-
     return (
         <Suspense>
             {(() => {

@@ -31,9 +31,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         "bodyClassName": clsx("admin-console", "user", getClassName("kcBodyClass"))
     });
 
-    console.log("Template Account", kcContext);
-    console.log({ props });
-
     if (!isReady) {
         return null;
     }
