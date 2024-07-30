@@ -7,7 +7,13 @@ export default defineConfig({
     plugins: [
         react(),
         keycloakify({
-            accountThemeImplementation: "none"
+            accountThemeImplementation: "none",
+            themeName: ["b2pconnect-k10"],
+            keycloakVersionTargets: {
+                "21-and-below": "b2pconnect-theme-v21-and-below.jar",
+                "22-and-above": "b2pconnect-theme-v22-and-above.jar"
+            },
+            keycloakifyBuildDirPath: "./keycloak-theme-dist"
         })
     ]
 });
