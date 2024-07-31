@@ -7,15 +7,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'npm'
       - run: yarn
       - run: yarn build-keycloak-theme
-      - uses: actions/upload-artifact@v3
+      - name: Create new release
+        uses: softprops/action-gh-release@v2
         with:
-          name: b2pconnect-keycloak-theme.jar
-          path: build_keycloak/target/*
+          tag_name: "${{github.run_id}}-${{github.run_number}}-${{github.run_attempt}}"
+          generate_release_notes: true
+          draft: false
+          files: keycloak-theme-dist/*
+          token: ${{ secrets.TOKEN }}
