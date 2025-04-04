@@ -4234,7 +4234,7 @@ jsonfile@^6.0.1:
     object.assign "^4.1.4"
     object.values "^1.1.6"
 
-keycloakify@^11.8.22:
+keycloakify@11.8.22:
   version "11.8.22"
   resolved "https://registry.npmjs.org/keycloakify/-/keycloakify-11.8.22.tgz"
   integrity sha512-OngWbF5vfzcKwN0cbUskExon3xH8GjURN33GHuBrPiWwR2n0sybyHj/A9IbPOlqYBapZxRKZAexwlTI55vrsbg==
