@@ -10,9 +10,9 @@
 
 import { lazy, Suspense, type ReactNode } from "react";
 
-export type ThemeName = "b2pconnect-k10";
+export type ThemeName = "b2pconnect-k11";
 
-export const themeNames: ThemeName[] = ["b2pconnect-k10"];
+export const themeNames: ThemeName[] = ["b2pconnect-k11"];
 
 export type KcEnvName = never;
 
