@@ -16,6 +16,13 @@ const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
 const errors = [];
 page.on("console", m => m.type() === "error" && errors.push(m.text()));
 page.on("pageerror", e => errors.push("pageerror: " + e.message));
+page.on(
+    "response",
+    r =>
+        r.status() >= 400 &&
+        !r.url().includes("favicon") &&
+        errors.push(`HTTP ${r.status()} ${r.url()}`)
+);
 
 // Clicks and waits for the next document to load (so the loop never reads the previous page),
 // then for the network to settle (the React page is lazy-loaded after "load")
@@ -51,7 +58,7 @@ for (const [i, expected] of expectedPages.entries()) {
 }
 
 console.log(
-    `${errors.length ? "FAIL" : "ok  "} no console errors = ${JSON.stringify(errors)}`
+    `${errors.length ? "FAIL" : "ok  "} no console / HTTP errors = ${JSON.stringify(errors)}`
 );
 await browser.close();
 process.exitCode = failures || errors.length ? 1 : 0;
