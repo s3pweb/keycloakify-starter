@@ -91,7 +91,8 @@ await page.fill("#password", password);
 await page.click("#kc-login");
 await page.waitForURL(/\/account/, { timeout: 20000 });
 await snap("4-logged-in");
-check("login ok: url", page.url().replace(base, "").split("?")[0], true);
+const loggedInPath = new URL(page.url()).pathname;
+check("login ok: url", loggedInPath, loggedInPath.startsWith("/realms/myrealm/account"));
 
 check("no console / HTTP errors", errors, errors.length === 0);
 await browser.close();
