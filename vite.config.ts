@@ -11,8 +11,8 @@ export default defineConfig({
             themeName: ["b2pconnect"],
             startKeycloakOptions: {
                 realmJsonFilePath: "./realm/realm.json",
-                // Lets Keycloak reach maildev (SMTP host.docker.internal:1025) on Linux
-                dockerExtraArgs: ["--add-host=host.docker.internal:host-gateway"]
+                // Shared network with maildev (realm SMTP host "maildev"), created by `make maildev`
+                dockerExtraArgs: ["--network=keycloakify-test"]
             }
         })
     ]

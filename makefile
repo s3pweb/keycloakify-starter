@@ -14,7 +14,8 @@ start-server: maildev
 	npx keycloakify start-keycloak --keycloak-version $(KC_VERSION) --port $(KC_PORT)
 
 maildev:
-	@docker start maildev >/dev/null 2>&1 || docker run -d --name maildev -p 1080:1080 -p 1025:1025 maildev/maildev
+	@docker network inspect keycloakify-test >/dev/null 2>&1 || docker network create keycloakify-test >/dev/null
+	@docker start maildev >/dev/null 2>&1 || docker run -d --name maildev --network keycloakify-test -p 1080:1080 -p 1025:1025 maildev/maildev
 	@echo "FAKE SMTP SERVER : open http://localhost:1080"
 
 stop-maildev:

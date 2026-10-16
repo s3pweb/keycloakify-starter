@@ -434,7 +434,7 @@
         {
             "id": "9463022e-0aae-4698-85ab-a2f28cc06f16",
             "createdTimestamp": 1693295380365,
-            "username": "user",
+            "username": "testuser",
             "enabled": true,
             "totp": false,
             "emailVerified": true,
@@ -1286,7 +1286,7 @@
         "port": "1025",
         "auth": "false",
         "replyTo": "",
-        "host": "host.docker.internal",
+        "host": "maildev",
         "from": "test@test.fr",
         "fromDisplayName": "Display Name",
         "envelopeFrom": "",
