@@ -12,3 +12,9 @@ body.kcBodyClass {
     background: url("./assets/logo-b2pconnect.png")
         center / 267px 60px no-repeat content-box;
 }
+
+/* font-size: 0 only hides text: also hide the HTML of the realm's displayNameHtml
+   (e.g. Keycloak's default <div class="kc-logo-text">, which has its own background image) */
+#kc-header-wrapper > * {
+    display: none;
+}

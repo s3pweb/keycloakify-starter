@@ -1,6 +1,7 @@
 {
     "id": "c5694990-1126-4b2a-92a5-de9916c90a13",
     "realm": "myrealm",
+    "displayNameHtml": "<div class=\"kc-logo-text\"><span>Keycloak</span></div>",
     "notBefore": 0,
     "defaultSignatureAlgorithm": "RS256",
     "revokeRefreshToken": false,

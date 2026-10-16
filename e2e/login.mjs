@@ -49,6 +49,14 @@ check(
     logoShot.length,
     logoShot.length > 2000
 );
+// The realm's displayNameHtml (test realm: Keycloak's default kc-logo-text image) must stay hidden
+const visibleTitleElements = await page.evaluate(
+    () =>
+        [...document.querySelectorAll("#kc-header-wrapper *")].filter(
+            e => e.getClientRects().length > 0
+        ).length
+);
+check("login: realm title hidden", visibleTitleElements, visibleTitleElements === 0);
 const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
 check("login: body background", bg, bg === "rgb(49, 63, 80)");
 // textContent, not innerText: the language dropdown is hidden until hovered
