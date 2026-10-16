@@ -2,3 +2,13 @@ body.kcBodyClass {
     background-image: none !important;
     background-color: #313F50 !important;
 }
+
+/* B2PConnect logo instead of the realm name in the header of keycloakify's Template */
+#kc-header-wrapper {
+    font-size: 0;
+    /* login.css padding (82px) would leave no room for the logo: the box is border-box */
+    padding: 0 10px;
+    height: 60px;
+    background: url("https://www.b2pconnect.com/wp-content/uploads/2021/06/B2PConnect.com_fondfonceai.png")
+        center / 267px 60px no-repeat content-box;
+}

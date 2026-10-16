@@ -35,9 +35,20 @@ const snap = name =>
 // 1. Login page (reached through the account console, which handles PKCE)
 await page.goto(`${realm}/account`);
 await page.waitForSelector("#username", { timeout: 20000 });
+await page.waitForLoadState("networkidle"); // the logo is a CSS background image
 await snap("1-login");
-const logo = await page.locator('#kc-header img[alt="B2PConnect.com"]').count();
-check("login: logo", logo, logo === 1);
+const logo = await page.evaluate(
+    () => getComputedStyle(document.getElementById("kc-header-wrapper")).backgroundImage
+);
+check("login: logo", logo, logo.includes("B2PConnect.com_fondfonceai"));
+// TODO: naive visibility heuristic — an empty header compresses to a tiny PNG (~0.6 KB vs ~9 KB
+// with the logo); compare against a reference image if it proves flaky
+const logoShot = await page.locator("#kc-header-wrapper").screenshot();
+check(
+    "login: logo visible (header screenshot bytes)",
+    logoShot.length,
+    logoShot.length > 2000
+);
 const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
 check("login: body background", bg, bg === "rgb(49, 63, 80)");
 // textContent, not innerText: the language dropdown is hidden until hovered

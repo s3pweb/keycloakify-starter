@@ -10,7 +10,7 @@
 - Fonctionnalités activées notables : `HOSTNAME_V1`, `JS_ADAPTER`, `ACCOUNT3`, `ADMIN2`, `WEB_AUTHN`, `KERBEROS`.
 - Thème (branche `b2pconnect-keycloakify-v11`) :
   - keycloakify **épinglé à `11.8.22`** (version exacte, commit `0994009`, sans justification dans le message) ; dernière version : 11.16.3.
-  - **Login** : pages par défaut (`DefaultPage`) mais **`Template.tsx` éjecté et personnalisé** (logo B2PConnect, boutons IdP masqués), `main.css` (fond `#313F50`), `doMakeUserConfirmPassword = true`. Stories Storybook : `login`, `login-username`, `login-password`, `info`, `terms`, `error`.
+  - **Login** : pages et Template par défaut de keycloakify (le `Template.tsx` copié a été supprimé le 2026-10-16) ; logo B2PConnect en image de fond CSS, `main.css` (fond `#313F50`), `doMakeUserConfirmPassword = true`. Stories Storybook : `login`, `login-username`, `login-password`, `info`, `terms`, `error`.
   - **Email** : thème FTL natif (`src/email`, `parent=base`) : `template.ftl` HTML personnalisé (logo, pied de page B2PConnect) + 12 templates HTML/texte + messages en 28 langues.
   - Pas de thème account (`accountThemeImplementation: "none"`).
   - **Nom du thème : `b2pconnect`** (décidé le 2026-10-16). Historique : `b2pconnect-k10` en v10 ; la v11 avait perdu `themeName` et produisait `keycloakify-starter`. → les realms devront sélectionner `b2pconnect` (login + email) lors de la mise en prod.
@@ -44,7 +44,7 @@ Points d'attention propres à la branche :
 
 | # | Constat | Action |
 |---|---|---|
-| L1 | **`Template.tsx` éjecté → ne reçoit plus les correctifs keycloakify.** Écarts constatés vs le Template d'origine 11.16.3 : fallback `realm.displayName \|\| realm.name` pour le titre ; `requestSubmit()` + `preventDefault()` sur « Try another way » (au lieu de `submit()`). Bug en plus : trois `+` parasites (copiés d'un diff) dans le sélecteur de langue → la liste affichait `NaNNaN` au lieu des langues. | ✅ Corrigé (T2). |
+| L1 | **`Template.tsx` éjecté → ne reçoit plus les correctifs keycloakify.** Écarts constatés vs le Template d'origine 11.16.3 : fallback `realm.displayName \|\| realm.name` pour le titre ; `requestSubmit()` + `preventDefault()` sur « Try another way » (au lieu de `submit()`). Bug en plus : trois `+` parasites (copiés d'un diff) dans le sélecteur de langue → la liste affichait `NaNNaN` au lieu des langues. | ✅ Corrigé (T2), puis **Template copié supprimé** (2026-10-16) : retour au Template de keycloakify, logo en CSS dans `src/login/main.css` → les correctifs keycloakify sont désormais reçus automatiquement. |
 | L2 | **`message.summary` est injecté via `dangerouslySetInnerHTML` sans `kcSanitize`** (le Template d'origine le sanitize). Risque XSS si un message contient du contenu contrôlable. Depuis 26.5 le serveur n'envoie plus de HTML dans les messages du login. | ✅ Corrigé (T2) : `kcSanitize(message.summary)`. |
 | L3 | Logo chargé depuis `https://www.b2pconnect.com/wp-content/...` (dépendance au site WordPress, aussi utilisée dans l'email). | Hors migration — à signaler : embarquer le logo dans `public/` serait plus robuste. |
 | L4 | Nouveau parcours d'inscription 26.7 (S10) : `register.ftl` sans mot de passe, puis page de définition des credentials. Non couvert par les stories. | Tester register avec Verify Email actif ; ajouter une story si la page est utilisée. |

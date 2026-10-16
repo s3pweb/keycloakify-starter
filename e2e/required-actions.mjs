@@ -29,12 +29,16 @@ let pageId;
 await page.goto(link, { waitUntil: "networkidle" });
 for (let i = 0; i < expectedPages.length; i++) {
     pageId = await page.evaluate(() => window.kcContext?.pageId);
-    const logo = await page.locator('img[alt="B2PConnect.com"]').count();
+    const logo = await page.evaluate(() =>
+        getComputedStyle(
+            document.getElementById("kc-header-wrapper")
+        ).backgroundImage.includes("B2PConnect.com_fondfonceai")
+    );
     await page.screenshot({
         path: `${shots}${label}-action-${i}-${pageId}.png`,
         fullPage: true
     });
-    const ok = expectedPages.includes(pageId) && logo === 1;
+    const ok = expectedPages.includes(pageId) && logo;
     console.log(`${ok ? "ok  " : "FAIL"} page ${i}: ${pageId} | logo=${logo}`);
     if (!ok) {
         failures++;
