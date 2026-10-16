@@ -81,6 +81,7 @@ Ce thème est rendu **par le serveur Keycloak** : il est directement concerné p
    → ✅ **même parcours partiel que T4 OK sur 24.0.5** (2026-10-16), jar `22-to-25`.
 7. **T7 — (optionnel) Restreindre les cibles** via `keycloakVersionTargets` dans `vite.config.ts` une fois la prod en 26.x.
 8. **T8 — Release** : bump `version` dans `package.json` et push (la CI `ci.yaml` ne publie que depuis `main` → merger la branche dans `main` d'abord). À faire avant I5.
+   La version (`0.0.0` aujourd'hui) devient aussi le `themeVersion` du jar et de `kcContext.themeVersion` (doc keycloakify) : partir d'une vraie version (ex. `1.0.0`) pour savoir quelle version du thème tourne en prod.
 
 ### Serveur (infra)
 
