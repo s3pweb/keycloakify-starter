@@ -17,6 +17,10 @@ fail() {
     exit 1
 }
 
+for tool in curl jq node; do
+    command -v "$tool" >/dev/null || fail "$tool is required (and Google Chrome for the browser checks)"
+done
+
 node "$DIR/login.mjs" "$BASE" "$LABEL"
 
 TOKEN=$(curl -sf -d client_id=admin-cli -d username=admin -d "password=${KC_ADMIN_PASSWORD:-admin}" \

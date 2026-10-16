@@ -9,7 +9,7 @@ help:
 	@echo "  make start-server [KC_VERSION=26.8.1] [KC_PORT=8080]  Keycloak + theme (keycloakify start-keycloak) + maildev"
 	@echo "  make maildev / stop-maildev                         Fake SMTP server, UI on http://localhost:1080"
 	@echo "  make save-server-realm [SAVE_KC_VERSION=24]         Copy the realm edited in the admin console to realm/realm.json (default: Keycloak run last)"
-	@echo "  make test-e2e [KC_PORT=8080] [LABEL=kc]             Browser + email checks against the running server (needs Chrome)"
+	@echo "  make test-e2e [KC_PORT=8080] [LABEL=kc]             Browser + email checks against the running server (needs Chrome, curl, jq)"
 	@echo "Test user : testuser / password123 — admin console : admin / admin"
 
 start-server: maildev
