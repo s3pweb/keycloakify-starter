@@ -44,8 +44,8 @@ Points d'attention propres à la branche :
 
 | # | Constat | Action |
 |---|---|---|
-| L1 | **`Template.tsx` éjecté → ne reçoit plus les correctifs keycloakify.** Écarts constatés vs le Template d'origine 11.16.3 : fallback `realm.displayName \|\| realm.name` pour le titre ; `requestSubmit()` + `preventDefault()` sur « Try another way » (au lieu de `submit()`). | Reporter ces correctifs dans `src/login/Template.tsx`. |
-| L2 | **`message.summary` est injecté via `dangerouslySetInnerHTML` sans `kcSanitize`** (le Template d'origine le sanitize). Risque XSS si un message contient du contenu contrôlable. Depuis 26.5 le serveur n'envoie plus de HTML dans les messages du login. | Rétablir `kcSanitize(message.summary)` (import `keycloakify/lib/kcSanitize`). |
+| L1 | **`Template.tsx` éjecté → ne reçoit plus les correctifs keycloakify.** Écarts constatés vs le Template d'origine 11.16.3 : fallback `realm.displayName \|\| realm.name` pour le titre ; `requestSubmit()` + `preventDefault()` sur « Try another way » (au lieu de `submit()`). Bug en plus : trois `+` parasites (copiés d'un diff) dans le sélecteur de langue → la liste affichait `NaNNaN` au lieu des langues. | ✅ Corrigé (T2). |
+| L2 | **`message.summary` est injecté via `dangerouslySetInnerHTML` sans `kcSanitize`** (le Template d'origine le sanitize). Risque XSS si un message contient du contenu contrôlable. Depuis 26.5 le serveur n'envoie plus de HTML dans les messages du login. | ✅ Corrigé (T2) : `kcSanitize(message.summary)`. |
 | L3 | Logo chargé depuis `https://www.b2pconnect.com/wp-content/...` (dépendance au site WordPress, aussi utilisée dans l'email). | Hors migration — à signaler : embarquer le logo dans `public/` serait plus robuste. |
 | L4 | Nouveau parcours d'inscription 26.7 (S10) : `register.ftl` sans mot de passe, puis page de définition des credentials. Non couvert par les stories. | Tester register avec Verify Email actif ; ajouter une story si la page est utilisée. |
 | L5 | Nouvelles pages keycloakify 11.16 (`LinkIdpAction`, `SelectOrganization`, variantes WebAuthn `useScript`). | Rendu automatiquement par `DefaultPage` avec notre Template après mise à jour de keycloakify. |
@@ -65,18 +65,20 @@ Ce thème est rendu **par le serveur Keycloak** : il est directement concerné p
 
 ### Thème (ce dépôt, branche `b2pconnect-keycloakify-v11`)
 
-1. **T1 — Mettre à jour keycloakify** `11.8.22` → `11.16.3` (garder l'épinglage exact si c'était voulu). Trancher le gestionnaire de paquets : `package-lock.json` **et** `yarn.lock` sont présents, la CI utilise `npm run`.
+1. ✅ **T1 — Mettre à jour keycloakify** `11.8.22` → `11.16.3` (garder l'épinglage exact si c'était voulu). Trancher le gestionnaire de paquets : `package-lock.json` **et** `yarn.lock` sont présents, la CI utilise `npm run`.
    → vérification : `npm run build` passe (type-check) ; diff de `src/kc.gen.tsx` limité au code généré.
-2. **T2 — Corriger `Template.tsx`** (L1, L2).
+2. ✅ **T2 — Corriger `Template.tsx`** (L1, L2).
    → vérification : `npm run build` passe ; stories `login`, `info`, `error` OK dans Storybook.
-3. **T3 — Construire les jars** : `npm run build-keycloak-theme`.
-   → vérification : `dist_keycloak/` contient `keycloak-theme-for-kc-26.2-and-above.jar` (cible prod) et `keycloak-theme-for-kc-22-to-25.jar`.
+3. ✅ **T3 — Construire les jars** : `npm run build-keycloak-theme` (Maven + Java requis).
+   → résultat : `keycloak-theme-for-kc-22-to-25.jar` (prod actuelle) et `keycloak-theme-for-kc-all-other-versions.jar` (Keycloak 26.x). Sans thème account, keycloakify ne produit **pas** de jar `26.2-and-above`.
 4. **T4 — Tester sur 26.8.x** : `make start-server KC_VERSION=26.8.1` (emails dans maildev : http://localhost:1080).
    → vérification : login, login-username, login-password, register (avec Verify Email, L4), reset password, OTP, WebAuthn, info, terms, error ; fond et logo corrects ; chaque email (E1) reçu avec le branding.
+   → 🟡 **partiel (2026-10-16, 26.8.1)** : OK pour login, erreur de mot de passe, changement de langue (fr/en), connexion réussie, emails « execute actions » et « vérification » (logo + pied de page), pages info et configuration OTP via le lien de l'email ; aucune erreur JS ni ressource en échec. Restent : register (L4), reset password, WebAuthn, terms, error, les 10 autres emails.
 5. **T5 — Thème email** (E2, E3) : comparer avec `base/email` 26.8.x, compléter templates / messages si nécessaire.
    → vérification : diff documenté ; emails nouveaux brandés.
 6. **T6 — Non-régression 24.0.5** (tant que la prod n'est pas migrée) : `make start-server KC_VERSION=24.0.5`.
    → vérification : même parcours OK avec le jar `22-to-25`, ou décision explicite de ne plus supporter 24.
+   → ✅ **même parcours partiel que T4 OK sur 24.0.5** (2026-10-16), jar `22-to-25`.
 7. **T7 — (optionnel) Restreindre les cibles** via `keycloakVersionTargets` dans `vite.config.ts` une fois la prod en 26.x.
 8. **T8 — Release** : bump `version` dans `package.json` et push (la CI `ci.yaml` ne publie que depuis `main` → merger la branche dans `main` d'abord). À faire avant I5.
 
@@ -86,12 +88,12 @@ Ce thème est rendu **par le serveur Keycloak** : il est directement concerné p
    → vérification : liste des points S1–S10 qui s'appliquent.
 2. **I2 — Préparer en 24.0.5** ce qui peut l'être : passer de `--proxy` à `--proxy-headers`, migrer les apps vers `keycloak-js` npm. (Hostname v2 : impossible en 24, cf. S1.)
    → vérification : prod 24.0.5 fonctionne sans `--proxy` et sans dépendre de `/js/keycloak.js`.
-3. **I3 — Environnement de test** : copie de la base de prod + Keycloak 26.8.x + config hostname v2 + jar `26.2-and-above` (issu de T3), `kc.sh build` / image reconstruite.
+3. **I3 — Environnement de test** : copie de la base de prod + Keycloak 26.8.x + config hostname v2 + jar `all-other-versions` (issu de T3), `kc.sh build` / image reconstruite.
    → vérification : démarrage OK, migration DB sans erreur (relever le SQL d'index loggué), login sur chaque realm, inscription, OTP/WebAuthn, Kerberos si utilisé, tous les emails.
 4. **I4 — Sauvegarde** complète de la base de prod + conservation de la config 24 (options hostname v1 / proxy, image ou distribution, jar `22-to-25`).
 5. **I5 — Mise en production** (fenêtre de maintenance, **interruption de service**, **tous les utilisateurs déconnectés** — cf. S5) :
    1. arrêter **toutes** les instances 24.0.5 ;
-   2. dans `providers/`, **retirer** le jar `22-to-25` et déposer le jar `26.2-and-above` (même nom de thème → conflit si les deux sont présents) ;
+   2. dans `providers/`, **retirer** le jar `22-to-25` et déposer le jar `all-other-versions` (même nom de thème → conflit si les deux sont présents) ;
    3. appliquer la config hostname v2 / `--proxy-headers` / features renommées, puis `kc.sh build` (ou déployer l'image reconstruite) ;
    4. démarrer 26.8.x (migration DB automatique) puis appliquer les index éventuels ;
    5. sélectionner le thème **`b2pconnect`** en login **et** email dans chaque realm (nouveau nom, cf. Contexte) ; régler « Allow UTF-8 » (S7) et le parcours d'inscription (S10).
