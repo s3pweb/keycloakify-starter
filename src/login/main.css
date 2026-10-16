@@ -9,6 +9,6 @@ body.kcBodyClass {
     /* login.css padding (82px) would leave no room for the logo: the box is border-box */
     padding: 0 10px;
     height: 60px;
-    background: url("https://www.b2pconnect.com/wp-content/uploads/2021/06/B2PConnect.com_fondfonceai.png")
+    background: url("./assets/logo-b2pconnect.png")
         center / 267px 60px no-repeat content-box;
 }

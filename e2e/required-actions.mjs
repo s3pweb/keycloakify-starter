@@ -38,7 +38,7 @@ for (const [i, expected] of expectedPages.entries()) {
     const logo = await page.evaluate(() =>
         getComputedStyle(
             document.getElementById("kc-header-wrapper")
-        ).backgroundImage.includes("B2PConnect.com_fondfonceai")
+        ).backgroundImage.includes("logo-b2pconnect")
     );
     await page.screenshot({
         path: `${shots}${label}-action-${i}-${pageId}.png`,

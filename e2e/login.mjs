@@ -40,7 +40,7 @@ await snap("1-login");
 const logo = await page.evaluate(
     () => getComputedStyle(document.getElementById("kc-header-wrapper")).backgroundImage
 );
-check("login: logo", logo, logo.includes("B2PConnect.com_fondfonceai"));
+check("login: logo", logo, logo.includes("logo-b2pconnect"));
 // TODO: naive visibility heuristic — an empty header compresses to a tiny PNG (~0.6 KB vs ~9 KB
 // with the logo); compare against a reference image if it proves flaky
 const logoShot = await page.locator("#kc-header-wrapper").screenshot();
