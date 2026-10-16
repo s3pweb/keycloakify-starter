@@ -43,7 +43,9 @@ send_mail() {
     fail "no new email in maildev 20 s after $1"
 }
 
-curl -s -X DELETE "$MAILDEV/all" >/dev/null
+# TODO: one maildev mailbox is shared by every Keycloak: two concurrent runs (e.g. 24 and 26) clear
+# each other's emails — run them one after the other, or give each run its own maildev.
+curl -sf -X DELETE "$MAILDEV/all" >/dev/null || fail "cannot clear maildev at $MAILDEV (is it running? make maildev)"
 MAILS=$(send_mail execute-actions-email -H 'Content-Type: application/json' -d '["UPDATE_PASSWORD","CONFIGURE_TOTP"]')
 [ "$(jq length <<<"$MAILS")" -eq 1 ] || fail "expected 1 email in maildev after execute-actions-email"
 LINK=$(jq -r '.[0].text' <<<"$MAILS" | grep -oE 'https?://[^ ]+action-token[^ ]+' | head -1 || true)
