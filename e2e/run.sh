@@ -11,18 +11,21 @@ LABEL=${2:-kc}
 MAILDEV=http://localhost:1080/api/email
 mkdir -p "$DIR/screenshots"
 
+# stderr: still shown when called inside $(...)
 fail() {
-    echo "FAIL $*"
+    echo "FAIL $*" >&2
     exit 1
 }
 
 node "$DIR/login.mjs" "$BASE" "$LABEL"
 
 TOKEN=$(curl -sf -d client_id=admin-cli -d username=admin -d "password=${KC_ADMIN_PASSWORD:-admin}" \
-    -d grant_type=password "$BASE/realms/master/protocol/openid-connect/token" | jq -r .access_token)
+    -d grant_type=password "$BASE/realms/master/protocol/openid-connect/token" | jq -r .access_token) ||
+    fail "no admin token from $BASE (is Keycloak running? KC_ADMIN_PASSWORD?)"
 AUTH="Authorization: Bearer $TOKEN"
 REALM=$BASE/admin/realms/myrealm
-USER_ID=$(curl -sf -H "$AUTH" "$REALM/users?username=testuser&exact=true" | jq -r '.[0].id')
+USER_ID=$(curl -sf -H "$AUTH" "$REALM/users?username=testuser&exact=true" | jq -r '.[0].id') ||
+    fail "cannot read testuser from the admin API"
 
 # Sends one email through the admin API and prints the emails now in maildev
 send_mail() {
