@@ -1,9 +1,12 @@
 // Copies the realm saved by `keycloakify start-keycloak` (.keycloakify/realm-kc-<major>.json)
 // to realm/realm.json, without secrets: realm keys, user passwords (both regenerated at import),
-// client secrets, SMTP password and identity provider client secrets.
+// client secrets, SMTP password, identity provider client secrets and LDAP bind credentials.
+// realm/realm.json is a test fixture only (it keeps keycloakify's dev settings: sslRequired none,
+// keycloakify-logging listener…): never import it into a real server.
 // Without argument, takes the most recently written file, i.e. the Keycloak run (and edited) last.
 // TODO: the saved file uses the export format of its Keycloak major; importing it into an older
-// major (e.g. 26 → 24, prod) may fail — only a warning for now; drop it once prod runs Keycloak 26.
+// major (e.g. 26 → 24, the prod version) may fail — only a warning for now; drop it once prod runs
+// Keycloak 26.
 /* global process */
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 
@@ -31,11 +34,15 @@ delete realm.smtpServer?.password;
 for (const idp of realm.identityProviders ?? []) {
     delete idp.config?.clientSecret;
 }
+for (const federation of realm.components?.["org.keycloak.storage.UserStorageProvider"] ??
+    []) {
+    delete federation.config?.bindCredential; // LDAP / AD bind password
+}
 
 writeFileSync("realm/realm.json", JSON.stringify(realm, null, 2) + "\n");
 console.log(`realm/realm.json updated from Keycloak ${major}`);
 if (Number(major) > OLDEST_TESTED_MAJOR) {
     console.warn(
-        `WARNING: exported by Keycloak ${major}, it may not import into Keycloak ${OLDEST_TESTED_MAJOR} (prod)`
+        `WARNING: exported by Keycloak ${major}, it may not import into Keycloak ${OLDEST_TESTED_MAJOR} (prod version)`
     );
 }
