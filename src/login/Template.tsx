@@ -1,3 +1,4 @@
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useInitialize } from "keycloakify/login/Template.useInitialize";
 import type { TemplateProps } from "keycloakify/login/TemplateProps";
@@ -32,7 +33,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     const { auth, url, message, isAppInitiatedAction } = kcContext;
 
     useEffect(() => {
-        document.title = documentTitle ?? msgStr("loginTitle", kcContext.realm.displayName);
+        document.title = documentTitle ?? msgStr("loginTitle", kcContext.realm.displayName || kcContext.realm.name);
     }, []);
 
     useSetClassName({
@@ -86,9 +87,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         className={kcClsx("kcLocaleListClass")}
                                     >
                                          {enabledLanguages.map(({ languageTag, label, href }, i) => (
-+                                           <li key={languageTag} className={kcClsx("kcLocaleListItemClass")} role="none">
-+                                               <a role="menuitem" id={`language-${i + 1}`} className={kcClsx("kcLocaleItemClass")} href={href}>
-+                                                   {label}
+                                            <li key={languageTag} className={kcClsx("kcLocaleListItemClass")} role="none">
+                                                <a role="menuitem" id={`language-${i + 1}`} className={kcClsx("kcLocaleItemClass")} href={href}>
+                                                    {label}
                                                 </a>
                                             </li>
                                         ))}
@@ -149,7 +150,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 <span
                                     className={kcClsx("kcAlertTitleClass")}
                                     dangerouslySetInnerHTML={{
-                                        __html: message.summary
+                                        __html: kcSanitize(message.summary)
                                     }}
                                 />
                             </div>
@@ -163,8 +164,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         <a
                                             href="#"
                                             id="try-another-way"
-                                            onClick={() => {
-                                                document.forms["kc-select-try-another-way-form" as never].submit();
+                                            onClick={event => {
+                                                document.forms["kc-select-try-another-way-form" as never].requestSubmit();
+                                                event.preventDefault();
                                                 return false;
                                             }}
                                         >
