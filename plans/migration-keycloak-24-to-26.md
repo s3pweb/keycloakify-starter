@@ -13,6 +13,7 @@
   - **Login** : pages et Template par défaut de keycloakify (le `Template.tsx` copié a été supprimé le 2026-10-16) ; logo B2PConnect en image de fond CSS, `main.css` (fond `#313F50`), `doMakeUserConfirmPassword = true`. Stories Storybook : `login`, `login-username`, `login-password`, `info`, `terms`, `error`.
   - **Email** : thème FTL natif (`src/email`, `parent=base`) : `template.ftl` HTML personnalisé (logo, pied de page B2PConnect) + 12 templates HTML/texte + messages en 28 langues.
   - Pas de thème account (`accountThemeImplementation: "none"`).
+  - Storybook reste en **8.1** (comme le starter keycloakify officiel, décidé le 2026-10-16). `src/kc.gen.tsx` réexporte `Meta`/`StoryObj` depuis `@storybook/react-vite`, qui ne les fournit qu'à partir de Storybook 9 : dans les stories, importer ces types depuis `@storybook/react` (ce que fait `npx keycloakify add-story`), jamais depuis `kc.gen`.
   - **Nom du thème : `b2pconnect`** (décidé le 2026-10-16). Historique : `b2pconnect-k10` en v10 ; la v11 avait perdu `themeName` et produisait `keycloakify-starter`. → les realms devront sélectionner `b2pconnect` (login + email) lors de la mise en prod.
   - Aucun fournisseur d'identité externe utilisé pour le moment (boutons IdP masqués dans le Template : cohérent).
   - Environnement de test : `make start-server [KC_VERSION=…] [KC_PORT=…]` (`keycloakify start-keycloak` + maildev, realm `realm/realm.json` repris de la v10 et nettoyé de ses clés et mots de passe).
