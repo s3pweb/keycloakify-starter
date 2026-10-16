@@ -11,7 +11,8 @@ export default defineConfig({
             themeName: ["b2pconnect"],
             startKeycloakOptions: {
                 realmJsonFilePath: "./realm/realm.json",
-                // Shared network with maildev (realm SMTP host "maildev"), created by `make maildev`
+                // Shared network with maildev (realm SMTP host "maildev"), created by `make maildev`:
+                // start Keycloak with `make start-server`, not `npx keycloakify start-keycloak` directly
                 dockerExtraArgs: ["--network=keycloakify-test"]
             }
         })

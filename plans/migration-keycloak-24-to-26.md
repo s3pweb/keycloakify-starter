@@ -15,7 +15,7 @@
   - Pas de thème account (`accountThemeImplementation: "none"`).
   - Storybook reste en **8.1** (comme le starter keycloakify officiel, décidé le 2026-10-16). `src/kc.gen.tsx` réexporte `Meta`/`StoryObj` depuis `@storybook/react-vite`, qui ne les fournit qu'à partir de Storybook 9 : dans les stories, importer ces types depuis `@storybook/react` (ce que fait `npx keycloakify add-story`), jamais depuis `kc.gen`.
   - **Nom du thème : `b2pconnect`** (décidé le 2026-10-16). Historique : `b2pconnect-k10` en v10 ; la v11 avait perdu `themeName` et produisait `keycloakify-starter`. → les realms devront sélectionner `b2pconnect` (login + email) lors de la mise en prod.
-  - Aucun fournisseur d'identité externe utilisé pour le moment (boutons IdP masqués dans le Template : cohérent).
+  - Aucun fournisseur d'identité externe utilisé pour le moment. Les boutons IdP ne sont plus masqués (Template de keycloakify) : si un fournisseur est ajouté, son bouton apparaîtra sur la page de login, ce qui est voulu.
   - Environnement de test : `make start-server [KC_VERSION=…] [KC_PORT=…]` (`keycloakify start-keycloak` + maildev, realm `realm/realm.json` repris de la v10 et nettoyé de ses clés et mots de passe).
 
 ## Bloquants serveur
@@ -39,7 +39,7 @@
 
 ### Login (React / keycloakify)
 
-Keycloakify rend ses propres pages React et embarque ses propres ressources `common` (le FTL généré redirige `resourcesCommonPath` vers `resources-common` du jar — vérifié dans keycloakify 11.16.3). Les changements de templates FTL / CSS du serveur (26.0 chemins `common`, 26.7 boutons horizontaux, 26.8 boutons IdP) **ne s'appliquent donc pas**. Les boutons IdP sont de toute façon masqués par notre `Template.tsx`.
+Keycloakify rend ses propres pages React et embarque ses propres ressources `common` (le FTL généré redirige `resourcesCommonPath` vers `resources-common` du jar — vérifié dans keycloakify 11.16.3). Les changements de templates FTL / CSS du serveur (26.0 chemins `common`, 26.7 boutons horizontaux, 26.8 boutons IdP) **ne s'appliquent donc pas**. Aucun fournisseur d'identité n'étant configuré, aucun bouton IdP n'est affiché.
 
 Points d'attention propres à la branche :
 
