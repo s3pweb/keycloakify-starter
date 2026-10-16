@@ -24,11 +24,11 @@ done
 node "$DIR/login.mjs" "$BASE" "$LABEL"
 
 TOKEN=$(curl -sf -d client_id=admin-cli -d username=admin -d "password=${KC_ADMIN_PASSWORD:-admin}" \
-    -d grant_type=password "$BASE/realms/master/protocol/openid-connect/token" | jq -r .access_token) ||
+    -d grant_type=password "$BASE/realms/master/protocol/openid-connect/token" | jq -er .access_token) ||
     fail "no admin token from $BASE (is Keycloak running? KC_ADMIN_PASSWORD?)"
 AUTH="Authorization: Bearer $TOKEN"
 REALM=$BASE/admin/realms/myrealm
-USER_ID=$(curl -sf -H "$AUTH" "$REALM/users?username=testuser&exact=true" | jq -r '.[0].id') ||
+USER_ID=$(curl -sf -H "$AUTH" "$REALM/users?username=testuser&exact=true" | jq -er '.[0].id') ||
     fail "cannot read testuser from the admin API"
 
 # Sends one email through the admin API, waits for it in maildev (20 s max) and prints all emails
@@ -47,8 +47,8 @@ send_mail() {
     fail "no new email in maildev 20 s after $1"
 }
 
-# TODO: one maildev mailbox is shared by every Keycloak: two concurrent runs (e.g. 24 and 26) clear
-# each other's emails — run them one after the other, or give each run its own maildev.
+# TODO: the maildev mailbox is shared: two concurrent test runs would clear each other's emails.
+# Not reachable today (one Keycloak at a time, see makefile); give each run its own maildev if needed.
 curl -sf -X DELETE "$MAILDEV/all" >/dev/null || fail "cannot clear maildev at $MAILDEV (is it running? make maildev)"
 MAILS=$(send_mail execute-actions-email -H 'Content-Type: application/json' -d '["UPDATE_PASSWORD","CONFIGURE_TOTP"]')
 [ "$(jq length <<<"$MAILS")" -eq 1 ] || fail "expected 1 email in maildev after execute-actions-email"

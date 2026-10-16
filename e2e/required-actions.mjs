@@ -35,11 +35,14 @@ let failures = 0;
 await page.goto(link, { waitUntil: "networkidle" });
 for (const [i, expected] of expectedPages.entries()) {
     const pageId = await page.evaluate(() => window.kcContext?.pageId);
-    const logo = await page.evaluate(() =>
-        getComputedStyle(
-            document.getElementById("kc-header-wrapper")
-        ).backgroundImage.includes("logo-b2pconnect")
-    );
+    // A page without the header (unexpected layout) must be reported, not crash the script
+    const logo = await page.evaluate(() => {
+        const header = document.getElementById("kc-header-wrapper");
+        return (
+            !!header &&
+            getComputedStyle(header).backgroundImage.includes("logo-b2pconnect")
+        );
+    });
     await page.screenshot({
         path: `${shots}${label}-action-${i}-${pageId}.png`,
         fullPage: true
