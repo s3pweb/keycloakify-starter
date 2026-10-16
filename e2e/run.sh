@@ -27,11 +27,20 @@ REALM=$BASE/admin/realms/myrealm
 USER_ID=$(curl -sf -H "$AUTH" "$REALM/users?username=testuser&exact=true" | jq -r '.[0].id') ||
     fail "cannot read testuser from the admin API"
 
-# Sends one email through the admin API and prints the emails now in maildev
+# Sends one email through the admin API, waits for it in maildev (20 s max) and prints all emails
 send_mail() {
+    local before mails
+    before=$(curl -sf "$MAILDEV" | jq length) || fail "maildev not reachable at $MAILDEV"
     curl -sf -X PUT -H "$AUTH" "${@:2}" "$REALM/users/$USER_ID/$1" || fail "admin API $1"
-    sleep 2
-    curl -sf "$MAILDEV"
+    for _ in $(seq 20); do
+        mails=$(curl -sf "$MAILDEV") || fail "maildev not reachable at $MAILDEV"
+        if [ "$(jq length <<<"$mails")" -gt "$before" ]; then
+            echo "$mails"
+            return
+        fi
+        sleep 1
+    done
+    fail "no new email in maildev 20 s after $1"
 }
 
 curl -s -X DELETE "$MAILDEV/all" >/dev/null
