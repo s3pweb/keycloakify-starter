@@ -111,4 +111,4 @@ Ce thème est rendu **par le serveur Keycloak** : il est directement concerné p
 - Pourquoi keycloakify a-t-il été épinglé à `11.8.22` ?
 - Doit-on continuer à produire un jar compatible 24 après la migration ?
 - Branches : `b2pconnect-keycloakify-v11` n'est pas mergée dans `main`. L'outillage de test de `b2pconnect-keycloakify-v10` (`makefile`, `realm/realm.json`, scripts) a été repris et adapté à `keycloakify start-keycloak`. L'ancienne branche `b2pconnect` contenait une personnalisation du thème **account** (« modify application page ») absente de la v11 : abandonnée volontairement ?
-- Hors migration : `.github/workflows/publish.yaml` pointe vers `build_keycloak/target/*` (chemin pré-v11), utilise Node 18 (`.nvmrc` = 22) et `actions/*@v3` — le corriger ou le supprimer ?
+- ~~Hors migration : `.github/workflows/publish.yaml` pointe vers `build_keycloak/target/*` (chemin pré-v11), utilise Node 18 (`.nvmrc` = 22) et `actions/*@v3` — le corriger ou le supprimer ?~~ Corrigé : `dist_keycloak/keycloak-theme-*.jar`, Node de `.nvmrc`, `actions/*@v4`.

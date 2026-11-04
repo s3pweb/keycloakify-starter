@@ -2,20 +2,24 @@ name: Publish theme
 
 on: workflow_dispatch
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+permissions:
+    contents: read
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
-      - run: yarn
-      - run: yarn build-keycloak-theme
-      - uses: actions/upload-artifact@v3
-        with:
-          name: b2pconnect-keycloak-theme.jar
-          path: build_keycloak/target/*
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+                  cache: yarn
+            - run: yarn install --frozen-lockfile
+            # keycloakify build needs Maven and Java, preinstalled on ubuntu-latest
+            - run: yarn build-keycloak-theme
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: b2pconnect-keycloak-theme
+                  path: dist_keycloak/keycloak-theme-*.jar
+                  if-no-files-found: error

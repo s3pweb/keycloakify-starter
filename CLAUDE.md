@@ -65,4 +65,4 @@ Uncomment the block in `src/main.tsx` that sets `window.kcContext = getKcContext
 ## CI / releases
 
 -   `.github/workflows/ci.yaml`: on push/PR to `main`, runs `build-keycloak-theme`. On push, if `package.json` `version` was bumped, it creates a GitHub release with `dist_keycloak/keycloak-theme-*.jar`. **To release: bump `version` in `package.json` and push.** Requires "Read and write permissions" for workflow tokens in the repo settings.
--   `.github/workflows/publish.yaml` (manual dispatch) uploads from `build_keycloak/target/*`, which is the pre-v11 output path — it does not match the current `dist_keycloak/` output.
+-   `.github/workflows/publish.yaml` (manual dispatch, any branch) builds the theme with yarn on the Node version of `.nvmrc` and uploads `dist_keycloak/keycloak-theme-*.jar` as the `b2pconnect-keycloak-theme` workflow artifact (no release, no tag).
