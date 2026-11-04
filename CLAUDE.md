@@ -4,10 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-The B2PConnect Keycloak theme, named **`b2pconnect`** (`themeName` in `vite.config.ts`), built with [Keycloakify v11](https://docs.keycloakify.dev) (React 18 + Vite + TypeScript). The output is a set of `.jar` files deployable into Keycloak:
-
--   `keycloak-theme-for-kc-22-to-25.jar` — current prod (Keycloak 24.0.5);
--   `keycloak-theme-for-kc-all-other-versions.jar` — Keycloak 26 (migration target).
+The B2PConnect Keycloak theme, named **`b2pconnect`** (`themeName` in `vite.config.ts`), built with [Keycloakify v11](https://docs.keycloakify.dev) (React 18 + Vite + TypeScript). The output is a single `.jar` deployable into Keycloak 26 (migration target): `keycloak-theme-for-kc-all-other-versions.jar`. `keycloakVersionTargets` in `vite.config.ts` disables the `22-to-25` jar (current prod, Keycloak 24.0.5): set `"22-to-25": true` to build it again.
 
 It contains a React **login theme** and a native FreeMarker **email theme** (`src/email`). There is no account theme (`accountThemeImplementation: "none"`).
 
@@ -22,7 +19,7 @@ yarn install
 yarn dev                     # Vite dev server (shows "No Keycloak Context" unless a mock is enabled, see below)
 yarn storybook               # Storybook 8 on :6006
 yarn build                   # tsc type-check + vite build
-yarn build-keycloak-theme    # build + `keycloakify build` → dist_keycloak/keycloak-theme-*.jar (requires Maven >= 3.1.1 and Java on PATH)
+yarn build-keycloak-theme    # build + `keycloakify build` → dist_keycloak/keycloak-theme-for-kc-all-other-versions.jar (requires Maven >= 3.1.1 and Java on PATH)
 yarn format                  # prettier --write (do not reformat src/login/main.css: its first line is kept as is)
 npx eslint .                 # lint (no npm script for it)
 ```
@@ -38,7 +35,7 @@ make save-server-realm [SAVE_KC_VERSION=24]             # realm edited in the ad
 -   Run Keycloak with `make start-server`, not `npx keycloakify start-keycloak` directly: it needs the `keycloakify-test` Docker network shared with maildev (the realm SMTP host is `maildev`).
 -   One Keycloak at a time (keycloakify reuses the container name).
 -   Test realm `myrealm` (`realm/realm.json`, test fixture only): `testuser` / `password123`; admin console `admin` / `admin` (override in e2e with `KC_TEST_PASSWORD` / `KC_ADMIN_PASSWORD`).
--   `make test-e2e` needs Google Chrome, curl, jq and node. It checks the login page (logo, realm title hidden, background, languages, French, wrong password, login redirect), the two emails sent through the admin API (B2PConnect logo and footer) and the required-action pages reached from the email link. Screenshots go to `e2e/screenshots/` (git-ignored). Run it on both 24.0.5 and 26.8.1 before committing a theme change.
+-   `make test-e2e` needs Google Chrome, curl, jq and node. It checks the login page (logo, realm title hidden, background, languages, French, wrong password, login redirect), the two emails sent through the admin API (B2PConnect logo and footer) and the required-action pages reached from the email link. Screenshots go to `e2e/screenshots/` (git-ignored). Run it on 26.8.1 before committing a theme change (24.0.5 needs the `22-to-25` jar, no longer built by default).
 
 Keycloakify CLI commands referenced by the project:
 

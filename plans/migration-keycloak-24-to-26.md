@@ -80,7 +80,7 @@ Ce thème est rendu **par le serveur Keycloak** : il est directement concerné p
 6. **T6 — Non-régression 24.0.5** (tant que la prod n'est pas migrée) : `make start-server KC_VERSION=24.0.5`.
    → vérification : même parcours OK avec le jar `22-to-25`, ou décision explicite de ne plus supporter 24.
    → ✅ **même parcours partiel que T4 OK sur 24.0.5** (2026-10-16), jar `22-to-25`.
-7. **T7 — (optionnel) Restreindre les cibles** via `keycloakVersionTargets` dans `vite.config.ts` une fois la prod en 26.x.
+7. ✅ **T7 — Restreindre les cibles** via `keycloakVersionTargets` dans `vite.config.ts` : seul le jar `all-other-versions` (Keycloak 26) est construit (2026-11-04, fait avant la mise en prod 26). Pour T6 ou le rollback I6, reconstruire le jar `22-to-25` (`"22-to-25": true`) ou le reprendre d'une release antérieure.
 8. **T8 — Release** : bump `version` dans `package.json` et push (la CI `ci.yaml` ne publie que depuis `main` → merger la branche dans `main` d'abord). À faire avant I5.
    La version (`0.0.0` aujourd'hui) devient aussi le `themeVersion` du jar et de `kcContext.themeVersion` (doc keycloakify) : partir d'une vraie version (ex. `1.0.0`) pour savoir quelle version du thème tourne en prod.
 
