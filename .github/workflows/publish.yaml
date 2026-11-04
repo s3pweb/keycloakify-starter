@@ -3,7 +3,7 @@ name: Publish theme
 on: workflow_dispatch
 
 permissions:
-    contents: read
+    contents: write # create the tag and the release
 
 jobs:
     build:
@@ -18,8 +18,14 @@ jobs:
             - run: yarn install --frozen-lockfile
             # keycloakify build needs Maven and Java, preinstalled on ubuntu-latest
             - run: yarn build-keycloak-theme
-            - uses: actions/upload-artifact@v4
+            - name: Create new release
+              uses: softprops/action-gh-release@v2
               with:
-                  name: b2pconnect-keycloak-theme
-                  path: dist_keycloak/keycloak-theme-*.jar
-                  if-no-files-found: error
+                  tag_name: "${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}"
+                  # tag the commit that was built, not the default branch
+                  target_commitish: ${{ github.sha }}
+                  generate_release_notes: true
+                  draft: false
+                  files: dist_keycloak/keycloak-theme-*.jar
+                  fail_on_unmatched_files: true
+                  token: ${{ secrets.GITHUB_TOKEN }}
